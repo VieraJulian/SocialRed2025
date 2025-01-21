@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * The Image class is a Java entity representing images with properties for id and imageUrl.
+ */
 @Entity
 @Getter
 @Setter

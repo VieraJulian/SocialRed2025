@@ -6,6 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * The Follow class represents a relationship between two UserEntity instances where one user follows
+ * another.
+ */
 @Entity
 @Getter
 @Setter

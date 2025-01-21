@@ -8,6 +8,10 @@ import lombok.Setter;
 
 import java.util.Set;
 
+/**
+ * The Role class represents a role entity with a unique role name and a set of permissions associated
+ * with it in a many-to-many relationship.
+ */
 @Entity
 @Getter
 @Setter

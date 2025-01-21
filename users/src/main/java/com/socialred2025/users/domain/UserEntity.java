@@ -12,11 +12,16 @@ import org.hibernate.annotations.SQLDelete;
 
 import java.util.Set;
 
+/**
+ * The UserEntity class represents a user entity with properties such as username, email, password,
+ * roles, and relationships with other entities like Image, Follow, and Friend.
+ */
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor@Table(name = "users")
+@NoArgsConstructor
+@Table(name = "users")
 @SQLDelete(sql = "UPDATE users SET enabled = false WHERE id = ?")
 public class UserEntity {
 

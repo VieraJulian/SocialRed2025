@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * The `Friend` class represents a friendship entity with fields for id, user, friend user, and status.
+ */
 @Entity
 @Getter
 @Setter

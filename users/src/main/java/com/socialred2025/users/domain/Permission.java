@@ -6,6 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * The class `Permission` represents a database entity for storing permission information with an ID
+ * and a unique permission name.
+ */
 @Entity
 @Getter
 @Setter
