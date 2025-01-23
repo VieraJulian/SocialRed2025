@@ -47,7 +47,7 @@ public class UserEntity {
     private boolean accountNotLocked;
     private boolean credentialNotExpired;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 
