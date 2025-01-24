@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.socialred2025.users.application.dto.UserCreateRequestDto;
 import com.socialred2025.users.application.dto.UserResponseDTO;
 import com.socialred2025.users.application.exception.RoleNotFoundException;
+import com.socialred2025.users.application.exception.UserNotFoundException;
 import com.socialred2025.users.application.mapper.IUserMapper;
 import com.socialred2025.users.domain.Role;
 import com.socialred2025.users.domain.UserEntity;
@@ -43,5 +44,16 @@ public class UserUseCase implements IUserInputPort {
         }
 
         return iUserMapper.userEntityToUserResponseDto(userRepository.saveUser(userCreateInfo));
+    }
+
+    @Override
+    public UserResponseDTO findUserById(Long id) throws UserNotFoundException {
+        Optional<UserEntity> userDB = userRepository.findUserById(id);
+
+        if (userDB.isPresent()) {
+            return iUserMapper.userEntityToUserResponseDto(userDB.get());
+        }
+
+        throw new UserNotFoundException("User not found with id: " + id);
     }
 }
