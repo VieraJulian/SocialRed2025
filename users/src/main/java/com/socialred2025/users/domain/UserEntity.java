@@ -13,7 +13,8 @@ import org.hibernate.annotations.SQLDelete;
 import java.util.Set;
 
 /**
- * The UserEntity class represents a user entity with properties such as username, email, password,
+ * The UserEntity class represents a user entity with properties such as
+ * username, email, password,
  * roles, and relationships with other entities like Image, Follow, and Friend.
  */
 @Entity
@@ -35,6 +36,7 @@ public class UserEntity {
     private String username;
 
     @NotBlank
+    @Column(unique = true)
     @Email(message = "Email should be valid")
     private String email;
 

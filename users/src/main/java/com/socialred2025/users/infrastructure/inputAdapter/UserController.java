@@ -3,6 +3,7 @@ package com.socialred2025.users.infrastructure.inputAdapter;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.socialred2025.users.application.dto.ApiUserResponseDTO;
 import com.socialred2025.users.application.dto.UserCreateRequestDto;
 import com.socialred2025.users.application.dto.UserResponseDTO;
 import com.socialred2025.users.infrastructure.inputPort.IUserInputPort;
@@ -29,35 +30,78 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<UserResponseDTO> createUser(@RequestBody UserCreateRequestDto createRequestDto) {
+    public ResponseEntity<ApiUserResponseDTO<?>> createUser(
+            @RequestBody UserCreateRequestDto createRequestDto) {
         try {
             UserResponseDTO userResponseDTO = iUserInputPort.createUser(createRequestDto);
-            return new ResponseEntity<>(userResponseDTO, HttpStatus.OK);
+
+            ApiUserResponseDTO<UserResponseDTO> response = ApiUserResponseDTO.<UserResponseDTO>builder()
+                    .success(true)
+                    .data(userResponseDTO)
+                    .error(null)
+                    .build();
+
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (Exception e) {
             log.error("Error creating user: {}", e.getMessage());
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+            ApiUserResponseDTO<String> response = ApiUserResponseDTO.<String>builder()
+                    .success(false)
+                    .data(null)
+                    .error(e.getMessage())
+                    .build();
+
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> getUserDetail(@PathVariable Long id) {
+    public ResponseEntity<ApiUserResponseDTO<?>> getUserDetail(@PathVariable Long id) {
         try {
             UserResponseDTO userResponseDTO = iUserInputPort.findUserById(id);
-            return new ResponseEntity<>(userResponseDTO, HttpStatus.OK);
+
+            ApiUserResponseDTO<UserResponseDTO> response = ApiUserResponseDTO.<UserResponseDTO>builder()
+                    .success(true)
+                    .data(userResponseDTO)
+                    .error(null)
+                    .build();
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             log.error("Error getting user: {}", e.getMessage());
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+            ApiUserResponseDTO<String> response = ApiUserResponseDTO.<String>builder()
+                    .success(false)
+                    .data(null)
+                    .error(e.getMessage())
+                    .build();
+
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<ApiUserResponseDTO<?>> deleteUser(@PathVariable Long id) {
         try {
             String msg = iUserInputPort.deleteUser(id);
-            return new ResponseEntity<>(msg, HttpStatus.OK);
+
+            ApiUserResponseDTO<String> response = ApiUserResponseDTO.<String>builder()
+                    .success(true)
+                    .data(msg)
+                    .error(null)
+                    .build();
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             log.error("Error deleting user: {}", e.getMessage());
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+            ApiUserResponseDTO<String> response = ApiUserResponseDTO.<String>builder()
+                    .success(false)
+                    .data(null)
+                    .error(e.getMessage())
+                    .build();
+
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
