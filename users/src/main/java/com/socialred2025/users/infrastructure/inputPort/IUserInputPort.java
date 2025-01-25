@@ -8,6 +8,9 @@ import com.socialred2025.users.application.exception.UserNotFoundException;
 public interface IUserInputPort {
 
     UserResponseDTO createUser(UserCreateRequestDto createRequestDto) throws RoleNotFoundException;
+
     UserResponseDTO findUserById(Long id) throws UserNotFoundException;
+
+    String deleteUser(Long id) throws UserNotFoundException;
 
 }

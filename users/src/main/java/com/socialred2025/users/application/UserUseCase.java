@@ -31,7 +31,7 @@ public class UserUseCase implements IUserInputPort {
     }
 
     @Override
-    public UserResponseDTO createUser(UserCreateRequestDto createRequestDto) throws RoleNotFoundException{
+    public UserResponseDTO createUser(UserCreateRequestDto createRequestDto) throws RoleNotFoundException {
         UserEntity userCreateInfo = iUserMapper.userCreateRequestDtoToUserEntity(createRequestDto);
 
         Optional<Role> role = roleRepository.findRoleById(createRequestDto.getRoleId());
@@ -52,6 +52,18 @@ public class UserUseCase implements IUserInputPort {
 
         if (userDB.isPresent()) {
             return iUserMapper.userEntityToUserResponseDto(userDB.get());
+        }
+
+        throw new UserNotFoundException("User not found with id: " + id);
+    }
+
+    @Override
+    public String deleteUser(Long id) throws UserNotFoundException {
+        Optional<UserEntity> userDB = userRepository.findUserById(id);
+
+        if (userDB.isPresent()) {
+            userRepository.deleteUserById(id);
+            return "User deleted successfuly";
         }
 
         throw new UserNotFoundException("User not found with id: " + id);
