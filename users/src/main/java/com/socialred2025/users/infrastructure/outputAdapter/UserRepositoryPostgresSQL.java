@@ -8,7 +8,8 @@ import com.socialred2025.users.domain.UserEntity;
 import com.socialred2025.users.infrastructure.outputPort.IUserRepository;
 
 /**
- * The UserRepositoryPostgresSQL class implements IUserRepository interface methods using a CRUD
+ * The UserRepositoryPostgresSQL class implements IUserRepository interface
+ * methods using a CRUD
  * repository for PostgreSQL database operations.
  */
 @Component
@@ -43,6 +44,11 @@ public class UserRepositoryPostgresSQL implements IUserRepository {
     @Override
     public void deleteUserById(Long id) {
         crudRepositoryPostgresSQL.deleteById(id);
+    }
+
+    @Override
+    public boolean existsByUsername(String username) {
+        return crudRepositoryPostgresSQL.existsByUsername(username);
     }
 
 }

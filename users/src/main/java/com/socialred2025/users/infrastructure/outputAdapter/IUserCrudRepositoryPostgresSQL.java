@@ -11,8 +11,12 @@ import com.socialred2025.users.domain.UserEntity;
 // `IUserCrudRepositoryPostgresSQL` that extends `JpaRepository<UserEntity, Long>`.
 @Repository
 public interface IUserCrudRepositoryPostgresSQL extends JpaRepository<UserEntity, Long> {
-    
+
     Optional<UserEntity> findById(Long id);
+
     Optional<UserEntity> findByUsername(String username);
+
     boolean existsByEmail(String email);
+
+    boolean existsByUsername(String username);
 }
