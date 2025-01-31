@@ -3,6 +3,8 @@ package com.socialred2025.users.infrastructure.outputAdapter;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.socialred2025.users.domain.UserEntity;
@@ -19,4 +21,7 @@ public interface IUserCrudRepositoryPostgresSQL extends JpaRepository<UserEntity
     boolean existsByEmail(String email);
 
     boolean existsByUsername(String username);
+
+    @Query("SELECT u.enabled FROM UserEntity u WHERE id = :id")
+    boolean isEnabled(@Param("id") Long id);
 }

@@ -71,24 +71,17 @@ public class UserUseCase implements IUserInputPort {
 
     @Override
     public String deleteUser(Long id) throws UserNotFoundException {
-        UserEntity userDB = userRepository.findUserById(id)
-                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
 
-        if (!userDB.isEnabled()) {
-            return "User is already disabled";
-        }
+        if (!userRepository.existsById(id))
+            throw new UserNotFoundException("User not found with id: " + id);
 
-        userRepository.deleteUserById(id);
+        if (userRepository.isEnabled(id)) {
+            userRepository.deleteUserById(id);
 
-        UserEntity updatedUser = userRepository.findUserById(id)
-                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
-
-        if (!updatedUser.isEnabled()) {
             return "User deleted successfuly";
         } else {
-            return "Failed to disable the user";
+            return "User is already disabled";
         }
-
     }
 
     @Override

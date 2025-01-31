@@ -18,4 +18,8 @@ public interface IUserRepository {
 
     void deleteUserById(Long id);
 
+    boolean existsById(Long id);
+
+    boolean isEnabled(Long id);
+
 }

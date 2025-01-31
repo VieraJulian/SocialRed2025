@@ -51,4 +51,14 @@ public class UserRepositoryPostgresSQL implements IUserRepository {
         return crudRepositoryPostgresSQL.existsByUsername(username);
     }
 
+    @Override
+    public boolean existsById(Long id) {
+        return crudRepositoryPostgresSQL.existsById(id);
+    }
+
+    @Override
+    public boolean isEnabled(Long id) {
+        return crudRepositoryPostgresSQL.isEnabled(id);
+    }
+
 }
