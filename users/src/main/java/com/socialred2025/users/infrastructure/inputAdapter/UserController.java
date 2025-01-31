@@ -113,7 +113,7 @@ public class UserController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<ApiUserResponseDTO<?>> updateUser(@PathVariable Long id,
-            @Valid @ModelAttribute UserUpdateRequestDTO updateRequestDTO,
+            @ModelAttribute UserUpdateRequestDTO updateRequestDTO,
             @RequestParam(value = "file", required = false) MultipartFile file) {
         try {
             UserResponseDTO userResponseDTO = iUserInputPort.updateUser(id, updateRequestDTO, file);

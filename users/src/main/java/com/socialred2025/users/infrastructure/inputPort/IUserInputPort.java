@@ -10,6 +10,7 @@ import com.socialred2025.users.application.dto.UserUpdateRequestDTO;
 import com.socialred2025.users.application.exception.EmailAlreadyExistsException;
 import com.socialred2025.users.application.exception.IncorrectPasswordException;
 import com.socialred2025.users.application.exception.RoleNotFoundException;
+import com.socialred2025.users.application.exception.UserErrorException;
 import com.socialred2025.users.application.exception.UserNotFoundException;
 import com.socialred2025.users.application.exception.UsernameAlreadyExistsException;
 
@@ -19,7 +20,7 @@ public interface IUserInputPort {
 
     UserResponseDTO updateUser(Long userId, UserUpdateRequestDTO updateRequestDTO, MultipartFile file)
             throws UserNotFoundException, IOException, UsernameAlreadyExistsException, EmailAlreadyExistsException,
-            IncorrectPasswordException;
+            IncorrectPasswordException, UserErrorException;
 
     UserResponseDTO findUserById(Long id) throws UserNotFoundException;
 
