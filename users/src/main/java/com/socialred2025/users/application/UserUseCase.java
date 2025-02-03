@@ -17,6 +17,8 @@ import com.socialred2025.users.application.exception.UserErrorException;
 import com.socialred2025.users.application.exception.UserNotFoundException;
 import com.socialred2025.users.application.exception.UsernameAlreadyExistsException;
 import com.socialred2025.users.application.mapper.IUserMapper;
+import com.socialred2025.users.application.utils.IImageUpdateUtils;
+import com.socialred2025.users.application.utils.IUserUpdateUtils;
 import com.socialred2025.users.domain.Image;
 import com.socialred2025.users.domain.Role;
 import com.socialred2025.users.domain.UserEntity;
@@ -33,28 +35,33 @@ public class UserUseCase implements IUserInputPort {
 
     private final IRoleRepository roleRepository;
 
-    private final IImageRepository imageRepository;
-
     private final IUserMapper iUserMapper;
 
-    private final ImageUtils imageUtils;
+    private final IUserUpdateUtils updateUtils;
+
+    private final IImageUpdateUtils imageUpdateUtils;
 
     public UserUseCase(IUserRepository userRepository, IUserMapper iUserMapper, IRoleRepository roleRepository,
-            IImageRepository imageRepository,
-            ImageUtils imageUtils) {
+            IUserUpdateUtils updateUtils, IImageUpdateUtils imageUpdateUtils) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
-        this.imageRepository = imageRepository;
         this.iUserMapper = iUserMapper;
-        this.imageUtils = imageUtils;
+        this.updateUtils = updateUtils;
+        this.imageUpdateUtils = imageUpdateUtils;
+
     }
 
     @Override
     public UserResponseDTO createUser(UserCreateRequestDTO createRequestDto) throws RoleNotFoundException {
         UserEntity userCreateInfo = iUserMapper.userCreateRequestDtoToUserEntity(createRequestDto);
 
-        Role role = roleRepository.findRoleById(createRequestDto.getRoleId()).orElseThrow(
-                () -> new RoleNotFoundException("Role not found with id: " + createRequestDto.getRoleId()));
+        Long roleId = createRequestDto.getRoleId();
+
+        if (!roleRepository.existsById(roleId)) {
+            throw new RoleNotFoundException("Role not found with id: " + roleId);
+        }
+
+        Role role = roleRepository.getReferenceById(roleId);
 
         userCreateInfo.setRole(role);
 
@@ -92,95 +99,15 @@ public class UserUseCase implements IUserInputPort {
         UserEntity userDB = userRepository.findUserById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
 
-        updateUsername(userDB, updateRequestDTO.getNewUsername());
-        updateEmail(userDB, updateRequestDTO.getNewEmail());
-        updatePassword(userDB, updateRequestDTO.getNewPassword(), updateRequestDTO.getOldPassword());
-        updateImage(userDB, file);
+        updateUtils.updateUsername(userDB, updateRequestDTO.getNewUsername());
+        updateUtils.updateEmail(userDB, updateRequestDTO.getNewEmail());
+        updateUtils.updatePassword(userDB, updateRequestDTO.getNewPassword(), updateRequestDTO.getOldPassword());
+        imageUpdateUtils.updateImage(userDB, file);
 
         UserEntity userUpdated = userRepository.saveUser(userDB);
 
         return iUserMapper.userEntityToUserResponseDto(userUpdated);
 
-    }
-
-    private void updateUsername(UserEntity user, String username)
-            throws UsernameAlreadyExistsException, UserErrorException {
-        if (username != null && !username.isEmpty()) {
-            if (userRepository.existsByUsername(username)) {
-                throw new UsernameAlreadyExistsException("The username " + username + " is already in use");
-            }
-
-            int characters = username.length();
-
-            if (characters < 3 || characters > 50) {
-                throw new UserErrorException("Username must be between 3 and 50 characters");
-            }
-
-            user.setUsername(username);
-        }
-    }
-
-    private void updateEmail(UserEntity user, String email) throws EmailAlreadyExistsException, UserErrorException {
-        if (email != null && !email.isEmpty()) {
-            if (userRepository.existsByEmail(email)) {
-                throw new EmailAlreadyExistsException("The email " + email + " is already in use.");
-            }
-
-            if (!isValidEmail(email)) {
-                throw new UserErrorException("The email " + email + " is not valid.");
-            }
-
-            user.setEmail(email);
-        }
-    }
-
-    private void updatePassword(UserEntity user, String newPassword, String oldPassword)
-            throws IncorrectPasswordException, UserErrorException {
-        if (newPassword != null && !newPassword.isEmpty()) {
-            if (oldPassword == null || !user.getPassword().equals(oldPassword)) {
-                throw new IncorrectPasswordException("The provided password is incorrect.");
-            }
-
-            if (newPassword.length() < 8) {
-                throw new UserErrorException("The new password must have at least 8 characters.");
-            }
-
-            user.setPassword(newPassword);
-        }
-    }
-
-    private void updateImage(UserEntity user, MultipartFile file) throws IOException {
-        if (!file.isEmpty()) {
-            Image newImage = imageUtils.fileUpload(file);
-            Image oldImage = user.getImage();
-            Image saveUserImage = null;
-
-            if (oldImage != null) {
-                Optional<Image> imageDB = imageRepository.findImageById(oldImage.getId());
-
-                if (imageDB.isPresent()) {
-                    imageDB.get().setImageUrl(newImage.getImageUrl());
-
-                    saveUserImage = imageRepository.saveImage(imageDB.get());
-                }
-
-            } else {
-                Image newUserImage = Image.builder()
-                        .imageUrl(newImage.getImageUrl())
-                        .build();
-
-                saveUserImage = imageRepository.saveImage(newUserImage);
-            }
-
-            user.setImage(saveUserImage);
-
-        }
-    }
-
-    private boolean isValidEmail(String email) {
-        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*\\.[a-zA-Z]{2,7}$";
-        Pattern pattern = Pattern.compile(emailRegex);
-        return pattern.matcher(email).matches();
     }
 
 }

@@ -8,7 +8,7 @@ import com.socialred2025.users.application.dto.UserCreateRequestDTO;
 import com.socialred2025.users.application.dto.UserResponseDTO;
 import com.socialred2025.users.domain.UserEntity;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = { IRoleMapper.class })
 public interface IUserMapper {
 
     IUserMapper INSTANCE = Mappers.getMapper(IUserMapper.class);

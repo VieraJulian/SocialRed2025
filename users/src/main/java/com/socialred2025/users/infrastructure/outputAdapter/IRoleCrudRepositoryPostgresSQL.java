@@ -10,4 +10,6 @@ import com.socialred2025.users.domain.Role;
 @Repository
 public interface IRoleCrudRepositoryPostgresSQL extends JpaRepository<Role, Long> {
 
+    boolean existsById(Long id);
+
 }

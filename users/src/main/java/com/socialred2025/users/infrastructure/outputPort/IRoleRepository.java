@@ -10,6 +10,10 @@ public interface IRoleRepository {
 
     Optional<Role> findRoleById(Long id);
 
+    boolean existsById(Long id);
+
+    Role getReferenceById(Long id);
+
     public void deleteRoleById(Long id);
 
 }

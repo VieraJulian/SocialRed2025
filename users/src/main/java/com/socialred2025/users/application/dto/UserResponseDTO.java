@@ -1,12 +1,12 @@
 package com.socialred2025.users.application.dto;
 
 import com.socialred2025.users.domain.Image;
-import com.socialred2025.users.domain.Role;
 
 import lombok.*;
 
 /**
- * The `UserResponseDTO` class represents a data transfer object for user information including id,
+ * The `UserResponseDTO` class represents a data transfer object for user
+ * information including id,
  * username, email, account status flags, role, and image.
  */
 @Getter
@@ -22,6 +22,6 @@ public class UserResponseDTO {
     private boolean accountNotExpired;
     private boolean accountNotLocked;
     private boolean credentialNotExpired;
-    private Role role;
+    private RoleDTO role;
     private Image image;
 }

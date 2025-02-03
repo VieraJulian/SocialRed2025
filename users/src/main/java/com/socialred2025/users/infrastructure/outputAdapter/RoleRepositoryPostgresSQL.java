@@ -8,11 +8,12 @@ import com.socialred2025.users.domain.Role;
 import com.socialred2025.users.infrastructure.outputPort.IRoleRepository;
 
 /**
- * The RoleRepositoryPostgresSQL class implements the IRoleRepository interface to interact with a
+ * The RoleRepositoryPostgresSQL class implements the IRoleRepository interface
+ * to interact with a
  * PostgreSQL database for CRUD operations on Role entities.
  */
 @Component
-public class RoleRepositoryPostgresSQL implements IRoleRepository{
+public class RoleRepositoryPostgresSQL implements IRoleRepository {
 
     private final IRoleCrudRepositoryPostgresSQL crudRepositoryPostgresSQL;
 
@@ -33,6 +34,16 @@ public class RoleRepositoryPostgresSQL implements IRoleRepository{
     @Override
     public void deleteRoleById(Long id) {
         crudRepositoryPostgresSQL.deleteById(id);
+    }
+
+    @Override
+    public boolean existsById(Long id) {
+        return crudRepositoryPostgresSQL.existsById(id);
+    }
+
+    @Override
+    public Role getReferenceById(Long id) {
+        return crudRepositoryPostgresSQL.getReferenceById(id);
     }
 
 }
