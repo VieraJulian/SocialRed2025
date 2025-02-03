@@ -1,8 +1,6 @@
 package com.socialred2025.users.application;
 
 import java.io.IOException;
-import java.util.Optional;
-import java.util.regex.Pattern;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,14 +17,11 @@ import com.socialred2025.users.application.exception.UsernameAlreadyExistsExcept
 import com.socialred2025.users.application.mapper.IUserMapper;
 import com.socialred2025.users.application.utils.IImageUpdateUtils;
 import com.socialred2025.users.application.utils.IUserUpdateUtils;
-import com.socialred2025.users.domain.Image;
 import com.socialred2025.users.domain.Role;
 import com.socialred2025.users.domain.UserEntity;
 import com.socialred2025.users.infrastructure.inputPort.IUserInputPort;
-import com.socialred2025.users.infrastructure.outputPort.IImageRepository;
 import com.socialred2025.users.infrastructure.outputPort.IRoleRepository;
 import com.socialred2025.users.infrastructure.outputPort.IUserRepository;
-import com.socialred2025.users.infrastructure.utils.ImageUtils;
 
 @Service
 public class UserUseCase implements IUserInputPort {
