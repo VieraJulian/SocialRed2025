@@ -23,6 +23,11 @@ import com.socialred2025.users.infrastructure.inputPort.IUserInputPort;
 import com.socialred2025.users.infrastructure.outputPort.IRoleRepository;
 import com.socialred2025.users.infrastructure.outputPort.IUserRepository;
 
+/**
+ * The `UserUseCase` class in Java implements methods for creating, finding,
+ * updating, and deleting
+ * user entities.
+ */
 @Service
 public class UserUseCase implements IUserInputPort {
 

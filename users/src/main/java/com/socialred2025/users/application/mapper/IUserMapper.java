@@ -8,6 +8,7 @@ import com.socialred2025.users.application.dto.UserCreateRequestDTO;
 import com.socialred2025.users.application.dto.UserResponseDTO;
 import com.socialred2025.users.domain.UserEntity;
 
+// This Java code snippet defines a MapStruct mapper interface named `IUserMapper`.
 @Mapper(componentModel = "spring", uses = { IRoleMapper.class })
 public interface IUserMapper {
 

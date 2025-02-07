@@ -7,6 +7,11 @@ import com.cloudinary.Cloudinary;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
+/**
+ * The `CloudinaryConfig` class is a Java configuration class that creates a
+ * Cloudinary instance based
+ * on the environment variable or a value from a `.env` file.
+ */
 @Configuration
 public class CloudinaryConfig {
 

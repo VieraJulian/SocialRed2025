@@ -24,6 +24,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 
+/**
+ * The UserController class in Java defines REST endpoints for user creation,
+ * retrieval, deletion, and
+ * updating with error handling.
+ */
 @RestController
 @RequestMapping("/users")
 @Slf4j

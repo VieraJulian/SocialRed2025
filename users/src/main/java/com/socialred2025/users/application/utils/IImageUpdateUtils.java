@@ -11,6 +11,11 @@ import com.socialred2025.users.domain.UserEntity;
 import com.socialred2025.users.infrastructure.outputPort.IImageRepository;
 import com.socialred2025.users.infrastructure.utils.ImageUtils;
 
+/**
+ * The `IImageUpdateUtils` class in Java is responsible for updating user images
+ * by uploading a new
+ * image file and saving it to the repository.
+ */
 @Component
 public class IImageUpdateUtils {
 

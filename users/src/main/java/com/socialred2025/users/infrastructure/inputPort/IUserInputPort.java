@@ -14,6 +14,10 @@ import com.socialred2025.users.application.exception.UserErrorException;
 import com.socialred2025.users.application.exception.UserNotFoundException;
 import com.socialred2025.users.application.exception.UsernameAlreadyExistsException;
 
+/**
+ * Interface that defines user input ports in the application.
+ * Provides methods to create, update, search, and delete users.
+ */
 public interface IUserInputPort {
 
     UserResponseDTO createUser(UserCreateRequestDTO createRequestDto) throws RoleNotFoundException;

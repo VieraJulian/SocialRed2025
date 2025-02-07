@@ -11,6 +11,12 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.socialred2025.users.domain.Image;
 
+/**
+ * Utilities for image management.
+ * Provides methods for uploading image files to a cloud storage service
+ * (Cloudinary).
+ * Validates the size and format of image files before uploading them.
+ */
 @Component
 public class ImageUtils {
 

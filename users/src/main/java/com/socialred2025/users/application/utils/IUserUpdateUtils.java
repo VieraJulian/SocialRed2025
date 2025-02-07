@@ -11,6 +11,11 @@ import com.socialred2025.users.application.exception.UsernameAlreadyExistsExcept
 import com.socialred2025.users.domain.UserEntity;
 import com.socialred2025.users.infrastructure.outputPort.IUserRepository;
 
+/**
+ * The `IUserUpdateUtils` class in Java provides methods to update a user's
+ * username, email, and
+ * password with validation checks and exception handling.
+ */
 @Component
 public class IUserUpdateUtils {
 
