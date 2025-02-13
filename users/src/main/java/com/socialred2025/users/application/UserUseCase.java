@@ -2,6 +2,7 @@ package com.socialred2025.users.application;
 
 import java.io.IOException;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -41,14 +42,16 @@ public class UserUseCase implements IUserInputPort {
 
     private final IImageUpdateUtils imageUpdateUtils;
 
+    private final PasswordEncoder passwordEncoder;
+
     public UserUseCase(IUserRepository userRepository, IUserMapper iUserMapper, IRoleRepository roleRepository,
-            IUserUpdateUtils updateUtils, IImageUpdateUtils imageUpdateUtils) {
+            IUserUpdateUtils updateUtils, IImageUpdateUtils imageUpdateUtils, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.iUserMapper = iUserMapper;
         this.updateUtils = updateUtils;
         this.imageUpdateUtils = imageUpdateUtils;
-
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -63,6 +66,7 @@ public class UserUseCase implements IUserInputPort {
 
         Role role = roleRepository.getReferenceById(roleId);
 
+        userCreateInfo.setPassword(encryptPassword(createRequestDto.getPassword(), passwordEncoder));
         userCreateInfo.setRole(role);
 
         return iUserMapper.userEntityToUserResponseDto(userRepository.saveUser(userCreateInfo));
@@ -108,6 +112,14 @@ public class UserUseCase implements IUserInputPort {
 
         return iUserMapper.userEntityToUserResponseDto(userUpdated);
 
+    }
+
+    public static String encryptPassword(String password, PasswordEncoder passwordEncoder) {
+        return passwordEncoder.encode(password);
+    }
+
+    public static boolean matchPassword(String rawPassword, String encodedPassword, PasswordEncoder passwordEncoder) {
+        return passwordEncoder.matches(rawPassword, encodedPassword);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.socialred2025.users.application.mapper;
 
+import com.socialred2025.users.application.dto.InternalUserResponseDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -21,5 +22,8 @@ public interface IUserMapper {
     UserEntity userCreateRequestDtoToUserEntity(UserCreateRequestDTO createRequestDto);
 
     UserResponseDTO userEntityToUserResponseDto(UserEntity userEntity);
+
+    @Mapping(source = "role", target = "role")
+    InternalUserResponseDTO userEntityToInternalUserResponseDTO(UserEntity userEntity);
 
 }

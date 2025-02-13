@@ -2,6 +2,7 @@ package com.socialred2025.users.application.utils;
 
 import java.util.regex.Pattern;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.socialred2025.users.application.exception.EmailAlreadyExistsException;
@@ -10,6 +11,8 @@ import com.socialred2025.users.application.exception.UserErrorException;
 import com.socialred2025.users.application.exception.UsernameAlreadyExistsException;
 import com.socialred2025.users.domain.UserEntity;
 import com.socialred2025.users.infrastructure.outputPort.IUserRepository;
+
+import static com.socialred2025.users.application.UserUseCase.*;
 
 /**
  * The `IUserUpdateUtils` class in Java provides methods to update a user's
@@ -21,8 +24,11 @@ public class IUserUpdateUtils {
 
     private final IUserRepository userRepository;
 
-    public IUserUpdateUtils(IUserRepository userRepository) {
+    private final PasswordEncoder passwordEncoder;
+
+    public IUserUpdateUtils(IUserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public void updateUsername(UserEntity user, String username)
@@ -59,7 +65,7 @@ public class IUserUpdateUtils {
     public void updatePassword(UserEntity user, String newPassword, String oldPassword)
             throws IncorrectPasswordException, UserErrorException {
         if (newPassword != null && !newPassword.isEmpty()) {
-            if (oldPassword == null || !user.getPassword().equals(oldPassword)) {
+            if (oldPassword == null || !matchPassword(oldPassword, user.getPassword(), passwordEncoder)) {
                 throw new IncorrectPasswordException("The provided password is incorrect.");
             }
 
@@ -67,8 +73,9 @@ public class IUserUpdateUtils {
                 throw new UserErrorException("The new password must have at least 8 characters.");
             }
 
-            user.setPassword(newPassword);
+            user.setPassword(encryptPassword(newPassword, passwordEncoder));
         }
+
     }
 
     private boolean isValidEmail(String email) {
