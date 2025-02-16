@@ -43,16 +43,4 @@ public class JwtUtils {
                 .withNotBefore(new Date(System.currentTimeMillis()))
                 .sign(algorithm);
     }
-
-    public String extractUsername(DecodedJWT decodedJWT) {
-        return decodedJWT.getSubject();
-    }
-
-    public Claim getSpecificClaim(DecodedJWT decodedJWT, String claimName) {
-        return decodedJWT.getClaim(claimName);
-    }
-
-    public Map<String, Claim> returnAllClaims(DecodedJWT decodedJWT) {
-        return decodedJWT.getClaims();
-    }
 }
