@@ -44,7 +44,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         List<GrantedAuthority> authorityList = new ArrayList<>();
 
-        authorityList.add(new SimpleGrantedAuthority("ROLE_".concat(user.getRole().toString())));
+        authorityList.add(new SimpleGrantedAuthority("ROLE_".concat(user.getRole().getRoleName().toString())));
 
         user.getRole().getPermissions().stream()
                 .forEach(permissionDTO -> authorityList.add(new SimpleGrantedAuthority(permissionDTO.getPermissionName().toString())));
@@ -67,7 +67,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Authentication authentication = this.authenticate(username, password);
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String accessToken = jwtUtils.createToke(authentication);
+        String accessToken = jwtUtils.createToken(authentication);
         return AuthResponseDTO.builder()
                 .username(username)
                 .message("Login ok")
