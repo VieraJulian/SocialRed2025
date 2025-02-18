@@ -24,6 +24,7 @@ public class SecurityConfig {
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(authorize -> authorize
                         .pathMatchers("/auth/**").permitAll()
+                        .pathMatchers("/users/**").hasAuthority("LIKE_POSTS")
                         .anyExchange().authenticated())
                 .addFilterAt(jwtTokenValidatorFilter, SecurityWebFiltersOrder.AUTHENTICATION)
                 .build();

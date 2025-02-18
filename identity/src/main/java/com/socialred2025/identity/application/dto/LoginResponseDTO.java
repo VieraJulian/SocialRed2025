@@ -5,5 +5,5 @@ import lombok.Builder;
 
 @JsonPropertyOrder({"username", "message", "jwt", "status"})
 @Builder
-public record AuthResponseDTO(String username, String message, String jwt, boolean status) {
+public record LoginResponseDTO(String username, String message, String jwt, boolean status) {
 }

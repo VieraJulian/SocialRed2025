@@ -1,7 +1,7 @@
 package com.socialred2025.identity.application.service;
 
-import com.socialred2025.identity.application.dto.AuthLoginRequestDTO;
-import com.socialred2025.identity.application.dto.AuthResponseDTO;
+import com.socialred2025.identity.application.dto.LoginRequestDTO;
+import com.socialred2025.identity.application.dto.LoginResponseDTO;
 import com.socialred2025.identity.application.dto.UserDTO;
 import com.socialred2025.identity.infrastructure.outputPort.IUserServicePort;
 import com.socialred2025.identity.infrastructure.utils.JwtUtils;
@@ -60,7 +60,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         );
     }
 
-    public AuthResponseDTO login(AuthLoginRequestDTO userRequest) {
+    public LoginResponseDTO login(LoginRequestDTO userRequest) {
         String username = userRequest.username();
         String password = userRequest.password();
 
@@ -68,7 +68,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String accessToken = jwtUtils.createToken(authentication);
-        return AuthResponseDTO.builder()
+        return LoginResponseDTO.builder()
                 .username(username)
                 .message("Login ok")
                 .jwt(accessToken)
