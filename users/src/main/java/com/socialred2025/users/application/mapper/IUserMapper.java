@@ -1,6 +1,7 @@
 package com.socialred2025.users.application.mapper;
 
 import com.socialred2025.users.application.dto.InternalUserResponseDTO;
+import com.socialred2025.users.application.dto.UserRegisterRequestDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -25,5 +26,11 @@ public interface IUserMapper {
 
     @Mapping(source = "role", target = "role")
     InternalUserResponseDTO userEntityToInternalUserResponseDTO(UserEntity userEntity);
+
+    @Mapping(target = "enabled", constant = "true")
+    @Mapping(target = "accountNotExpired", constant = "true")
+    @Mapping(target = "accountNotLocked", constant = "true")
+    @Mapping(target = "credentialNotExpired", constant = "true")
+    UserEntity userRegisterRequestDtoToUserEntity(UserRegisterRequestDTO registerRequestDTO);
 
 }
