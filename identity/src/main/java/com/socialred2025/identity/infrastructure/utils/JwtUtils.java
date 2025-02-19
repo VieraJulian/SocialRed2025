@@ -6,13 +6,13 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.socialred2025.identity.application.dto.TokenValidationResultDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
-import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -46,14 +46,21 @@ public class JwtUtils {
                 .sign(algorithm);
     }
 
-    public DecodedJWT validateToken(String token) {
+    public TokenValidationResultDTO validateToken(String token) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(this.privateKey);
             JWTVerifier verifier = JWT.require(algorithm)
                     .withIssuer(this.userGenerator)
                     .build();
 
-            return verifier.verify(token);
+            DecodedJWT decodedJWT = verifier.verify(token);
+
+            return TokenValidationResultDTO.builder()
+                    .valid(true)
+                    .username(extractUsername(decodedJWT))
+                    .authorities(getSpecificClaim(decodedJWT, "authorities").asString())
+                    .build();
+
         } catch (JWTVerificationException e) {
             throw new JWTVerificationException("Invalid token. Not authorized");
         }
@@ -65,9 +72,5 @@ public class JwtUtils {
 
     public Claim getSpecificClaim(DecodedJWT decodedJWT, String claimName) {
         return decodedJWT.getClaim(claimName);
-    }
-
-    public Map<String, Claim> returnAllClaims(DecodedJWT decodedJWT) {
-        return decodedJWT.getClaims();
     }
 }

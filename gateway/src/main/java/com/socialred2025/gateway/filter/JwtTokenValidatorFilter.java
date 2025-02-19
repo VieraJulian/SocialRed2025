@@ -31,10 +31,10 @@ public class JwtTokenValidatorFilter implements WebFilter {
                 .switchIfEmpty(chain.filter(exchange).then(Mono.empty()))
                 .map(token -> token.replace("Bearer ", ""))
                 .flatMap(token -> identityClient.validateToken(token)
-                        .flatMap(validationResponse -> {
-                            if (Boolean.TRUE.equals(validationResponse.get("valid"))) {
-                                String username = (String) validationResponse.get("username");
-                                String authorities = (String) validationResponse.get("authorities");
+                        .flatMap(response -> {
+                            if (response.isSuccess() && response.getData().isValid()) {
+                                String username = response.getData().getUsername();
+                                String authorities = response.getData().getAuthorities();
                                 Collection authoritiesList = AuthorityUtils.commaSeparatedStringToAuthorityList(authorities);
 
                                 Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, authoritiesList);
