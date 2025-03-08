@@ -26,14 +26,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final IUserServicePort userServicePort;
 
-    private final JwtUtils jwtUtils;
-
-    private final PasswordEncoder passwordEncoder;
-
-    public UserDetailsServiceImpl(IUserServicePort iUserServicePort, JwtUtils jwtUtils, PasswordEncoder passwordEncoder) {
+    public UserDetailsServiceImpl(IUserServicePort iUserServicePort) {
         this.userServicePort = iUserServicePort;
-        this.jwtUtils = jwtUtils;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -58,34 +52,5 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 user.isAccountNotLocked(),
                 authorityList
         );
-    }
-
-    public LoginResponseDTO login(LoginRequestDTO userRequest) {
-        String username = userRequest.username();
-        String password = userRequest.password();
-
-        Authentication authentication = this.authenticate(username, password);
-
-        String accessToken = jwtUtils.createToken(authentication);
-        return LoginResponseDTO.builder()
-                .username(username)
-                .message("Login ok")
-                .jwt(accessToken)
-                .status(true)
-                .build();
-    }
-
-    public Authentication authenticate(String username, String password) {
-        UserDetails userDetails = this.loadUserByUsername(username);
-
-        if (userDetails == null) {
-            throw new BadCredentialsException("Invalid username or password");
-        }
-
-        if (!passwordEncoder.matches(password, userDetails.getPassword())) {
-            throw  new BadCredentialsException("Invalid password");
-        }
-
-        return new UsernamePasswordAuthenticationToken(username, userDetails.getPassword(), userDetails.getAuthorities());
     }
 }
