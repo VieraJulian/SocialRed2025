@@ -52,15 +52,15 @@ public class Publication {
 
     private LocalDateTime deletedAt;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "imageId")
     private Image image;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "publicationId")
     private Set<Like> likes = new HashSet<>();
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "publicationId")
     private Set<Comment> comments = new HashSet<>();
 
