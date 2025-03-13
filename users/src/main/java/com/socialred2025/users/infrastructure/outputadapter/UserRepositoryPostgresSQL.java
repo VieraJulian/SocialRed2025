@@ -1,11 +1,11 @@
-package com.socialred2025.users.infrastructure.outputAdapter;
+package com.socialred2025.users.infrastructure.outputadapter;
 
 import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
 import com.socialred2025.users.domain.UserEntity;
-import com.socialred2025.users.infrastructure.outputPort.IUserRepository;
+import com.socialred2025.users.infrastructure.outputport.IUserRepository;
 
 /**
  * The UserRepositoryPostgresSQL class implements IUserRepository interface

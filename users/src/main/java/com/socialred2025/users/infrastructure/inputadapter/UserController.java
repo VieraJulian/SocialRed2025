@@ -1,4 +1,4 @@
-package com.socialred2025.users.infrastructure.inputAdapter;
+package com.socialred2025.users.infrastructure.inputadapter;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -9,7 +9,7 @@ import com.socialred2025.users.application.dto.ApiUserResponseDTO;
 import com.socialred2025.users.application.dto.UserCreateRequestDTO;
 import com.socialred2025.users.application.dto.UserResponseDTO;
 import com.socialred2025.users.application.dto.UserUpdateRequestDTO;
-import com.socialred2025.users.infrastructure.inputPort.IUserInputPort;
+import com.socialred2025.users.infrastructure.inputport.IUserInputPort;
 
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;

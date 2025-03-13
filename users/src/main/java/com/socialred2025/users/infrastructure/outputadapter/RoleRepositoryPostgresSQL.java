@@ -1,11 +1,11 @@
-package com.socialred2025.users.infrastructure.outputAdapter;
+package com.socialred2025.users.infrastructure.outputadapter;
 
 import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
 import com.socialred2025.users.domain.Role;
-import com.socialred2025.users.infrastructure.outputPort.IRoleRepository;
+import com.socialred2025.users.infrastructure.outputport.IRoleRepository;
 
 /**
  * The RoleRepositoryPostgresSQL class implements the IRoleRepository interface

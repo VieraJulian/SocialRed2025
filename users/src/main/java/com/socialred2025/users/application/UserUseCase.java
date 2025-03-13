@@ -20,9 +20,9 @@ import com.socialred2025.users.application.utils.IImageUpdateUtils;
 import com.socialred2025.users.application.utils.IUserUpdateUtils;
 import com.socialred2025.users.domain.Role;
 import com.socialred2025.users.domain.UserEntity;
-import com.socialred2025.users.infrastructure.inputPort.IUserInputPort;
-import com.socialred2025.users.infrastructure.outputPort.IRoleRepository;
-import com.socialred2025.users.infrastructure.outputPort.IUserRepository;
+import com.socialred2025.users.infrastructure.inputport.IUserInputPort;
+import com.socialred2025.users.infrastructure.outputport.IRoleRepository;
+import com.socialred2025.users.infrastructure.outputport.IUserRepository;
 
 /**
  * The `UserUseCase` class in Java implements methods for creating, finding,
@@ -75,7 +75,7 @@ public class UserUseCase implements IUserInputPort {
     @Override
     public UserResponseDTO findUserById(Long id) throws UserNotFoundException {
         UserEntity userDB = userRepository.findUserById(id)
-                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + "'" + id + "'"));
 
         return iUserMapper.userEntityToUserResponseDto(userDB);
     }
@@ -84,7 +84,7 @@ public class UserUseCase implements IUserInputPort {
     public String deleteUser(Long id) throws UserNotFoundException {
 
         if (!userRepository.existsById(id))
-            throw new UserNotFoundException("User not found with id: " + id);
+            throw new UserNotFoundException("User not found with id: " + "'" + id + "'");
 
         if (userRepository.isEnabled(id)) {
             userRepository.deleteUserById(id);

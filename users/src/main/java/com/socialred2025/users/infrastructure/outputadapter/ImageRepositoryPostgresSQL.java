@@ -1,11 +1,11 @@
-package com.socialred2025.users.infrastructure.outputAdapter;
+package com.socialred2025.users.infrastructure.outputadapter;
 
 import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
 import com.socialred2025.users.domain.Image;
-import com.socialred2025.users.infrastructure.outputPort.IImageRepository;
+import com.socialred2025.users.infrastructure.outputport.IImageRepository;
 
 @Component
 public class ImageRepositoryPostgresSQL implements IImageRepository {

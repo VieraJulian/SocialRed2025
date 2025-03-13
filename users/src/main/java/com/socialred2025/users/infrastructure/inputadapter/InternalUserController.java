@@ -1,10 +1,10 @@
-package com.socialred2025.users.infrastructure.inputAdapter;
+package com.socialred2025.users.infrastructure.inputadapter;
 
 import com.socialred2025.users.application.dto.ApiUserResponseDTO;
 import com.socialred2025.users.application.dto.InternalUserResponseDTO;
 import com.socialred2025.users.application.dto.UserRegisterRequestDTO;
 import com.socialred2025.users.application.dto.UserResponseDTO;
-import com.socialred2025.users.infrastructure.inputPort.IInternalUserInputPort;
+import com.socialred2025.users.infrastructure.inputport.IInternalUserInputPort;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.socialred2025.users.domain.Image;
 import com.socialred2025.users.domain.UserEntity;
-import com.socialred2025.users.infrastructure.outputPort.IImageRepository;
+import com.socialred2025.users.infrastructure.outputport.IImageRepository;
 import com.socialred2025.users.infrastructure.utils.ImageUtils;
 
 /**

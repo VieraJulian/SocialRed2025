@@ -1,4 +1,4 @@
-package com.socialred2025.users.infrastructure.outputAdapter;
+package com.socialred2025.users.infrastructure.outputadapter;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

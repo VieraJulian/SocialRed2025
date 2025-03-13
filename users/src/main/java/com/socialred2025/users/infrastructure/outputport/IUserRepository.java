@@ -1,4 +1,4 @@
-package com.socialred2025.users.infrastructure.outputPort;
+package com.socialred2025.users.infrastructure.outputport;
 
 import java.util.Optional;
 

@@ -1,4 +1,4 @@
-package com.socialred2025.users.infrastructure.inputPort;
+package com.socialred2025.users.infrastructure.inputport;
 
 import com.socialred2025.users.application.dto.InternalUserResponseDTO;
 import com.socialred2025.users.application.dto.UserRegisterRequestDTO;

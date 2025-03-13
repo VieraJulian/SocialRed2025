@@ -1,4 +1,4 @@
-package com.socialred2025.users.infrastructure.inputPort;
+package com.socialred2025.users.infrastructure.inputport;
 
 import java.io.IOException;
 

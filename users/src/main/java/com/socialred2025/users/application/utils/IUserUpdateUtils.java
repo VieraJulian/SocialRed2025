@@ -10,7 +10,7 @@ import com.socialred2025.users.application.exception.IncorrectPasswordException;
 import com.socialred2025.users.application.exception.UserErrorException;
 import com.socialred2025.users.application.exception.UsernameAlreadyExistsException;
 import com.socialred2025.users.domain.UserEntity;
-import com.socialred2025.users.infrastructure.outputPort.IUserRepository;
+import com.socialred2025.users.infrastructure.outputport.IUserRepository;
 
 import static com.socialred2025.users.application.UserUseCase.*;
 
