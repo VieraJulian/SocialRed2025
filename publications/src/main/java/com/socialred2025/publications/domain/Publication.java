@@ -28,11 +28,11 @@ public class Publication {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @NotNull(message = "User ID cannot be null")
     @Column(nullable = false)
     private Long userId;
 
-    @Size(max = 300)
+    @Size(max = 300, message = "Description cannot exceed 300 characters")
     @NotBlank
     @Column(length = 300, nullable = false)
     private String description;
