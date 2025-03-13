@@ -1,4 +1,4 @@
-package com.socialred2025.identity.infrastructure.outputPort;
+package com.socialred2025.identity.infrastructure.outputport;
 
 import com.socialred2025.identity.application.dto.UserDTO;
 import com.socialred2025.identity.application.dto.UserRegisterRequestDTO;

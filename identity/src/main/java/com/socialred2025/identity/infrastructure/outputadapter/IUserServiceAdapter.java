@@ -1,4 +1,4 @@
-package com.socialred2025.identity.infrastructure.outputAdapter;
+package com.socialred2025.identity.infrastructure.outputadapter;
 
 import com.socialred2025.identity.application.dto.ApiUserResponseDTO;
 import com.socialred2025.identity.application.dto.UserDTO;

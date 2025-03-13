@@ -1,8 +1,7 @@
-package com.socialred2025.identity.infrastructure.inputAdapter;
+package com.socialred2025.identity.infrastructure.inputadapter;
 
 import com.socialred2025.identity.application.dto.*;
-import com.socialred2025.identity.application.service.IdentityService;
-import com.socialred2025.identity.infrastructure.inputPort.IIdentityInputPort;
+import com.socialred2025.identity.infrastructure.inputport.IIdentityInputPort;
 import com.socialred2025.identity.infrastructure.utils.JwtUtils;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -19,13 +18,13 @@ public class AuthController {
 
     private final JwtUtils jwtUtils;
 
-    public AuthController(JwtUtils jwtUtils, IdentityService identityService, IIdentityInputPort identityInputPort) {
+    public AuthController(JwtUtils jwtUtils, IIdentityInputPort identityInputPort) {
         this.jwtUtils = jwtUtils;
         this.identityInputPort = identityInputPort;
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ApiAuthResponseDTO> login(@RequestBody @Valid LoginRequestDTO userRequest) {
+    public ResponseEntity<ApiAuthResponseDTO<?>> login(@RequestBody @Valid LoginRequestDTO userRequest) {
         try {
             LoginResponseDTO loginResponseDTO = identityInputPort.login(userRequest);
 
@@ -75,7 +74,7 @@ public class AuthController {
     }
 
     @PostMapping("/validateToken")
-    public ResponseEntity<ApiAuthResponseDTO> validateToken(@RequestParam String token) {
+    public ResponseEntity<ApiAuthResponseDTO<?>> validateToken(@RequestParam String token) {
         try {
             TokenValidationResultDTO validationResultDTO = jwtUtils.validateToken(token);
 

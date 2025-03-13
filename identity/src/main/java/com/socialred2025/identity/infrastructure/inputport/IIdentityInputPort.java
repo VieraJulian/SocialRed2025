@@ -1,4 +1,4 @@
-package com.socialred2025.identity.infrastructure.inputPort;
+package com.socialred2025.identity.infrastructure.inputport;
 
 import com.socialred2025.identity.application.dto.LoginRequestDTO;
 import com.socialred2025.identity.application.dto.LoginResponseDTO;
