@@ -5,6 +5,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -35,7 +36,7 @@ public class JwtTokenValidatorFilter implements WebFilter {
                             if (response.isSuccess() && response.getData().isValid()) {
                                 String username = response.getData().getUsername();
                                 String authorities = response.getData().getAuthorities();
-                                Collection authoritiesList = AuthorityUtils.commaSeparatedStringToAuthorityList(authorities);
+                                Collection<GrantedAuthority> authoritiesList = AuthorityUtils.commaSeparatedStringToAuthorityList(authorities);
 
                                 Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, authoritiesList);
                                 return Mono.just(authentication);
