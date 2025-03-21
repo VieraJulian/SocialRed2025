@@ -25,7 +25,7 @@ public class JwtUtils {
     @Value("${security.jwt.user.generator}")
     private String userGenerator;
 
-    public String createToken(Authentication authentication) {
+    public String createToken(Authentication authentication, Long userId) {
         Algorithm algorithm = Algorithm.HMAC256(this.privateKey);
 
         String username = authentication.getPrincipal().toString();
@@ -38,6 +38,7 @@ public class JwtUtils {
         return JWT.create()
                 .withIssuer(this.userGenerator)
                 .withSubject(username)
+                .withClaim("userId", userId)
                 .withClaim("authorities", authorities)
                 .withIssuedAt(new Date())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 1800000))
@@ -59,6 +60,7 @@ public class JwtUtils {
                     .valid(true)
                     .username(extractUsername(decodedJWT))
                     .authorities(getSpecificClaim(decodedJWT, "authorities").asString())
+                    .userId(getSpecificClaim(decodedJWT, "userId").asLong())
                     .build();
 
         } catch (JWTVerificationException e) {

@@ -1,8 +1,6 @@
 package com.socialred2025.users.infrastructure.inputadapter;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.socialred2025.users.application.dto.ApiUserResponseDTO;
@@ -16,13 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
 
 /**
  * The UserController class in Java defines REST endpoints for user creation,
@@ -66,10 +57,10 @@ public class UserController {
         }
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ApiUserResponseDTO<?>> getUserDetail(@PathVariable Long id) {
+    @GetMapping
+    public ResponseEntity<ApiUserResponseDTO<?>> getUserDetail(@RequestHeader("userId") Long userId) {
         try {
-            UserResponseDTO userResponseDTO = iUserInputPort.findUserById(id);
+            UserResponseDTO userResponseDTO = iUserInputPort.findUserById(userId);
 
             ApiUserResponseDTO<UserResponseDTO> response = ApiUserResponseDTO.<UserResponseDTO>builder()
                     .success(true)
@@ -91,10 +82,10 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<ApiUserResponseDTO<?>> deleteUser(@PathVariable Long id) {
+    @DeleteMapping("/delete")
+    public ResponseEntity<ApiUserResponseDTO<?>> deleteUser(@RequestHeader("userId") Long userId) {
         try {
-            String msg = iUserInputPort.deleteUser(id);
+            String msg = iUserInputPort.deleteUser(userId);
 
             ApiUserResponseDTO<String> response = ApiUserResponseDTO.<String>builder()
                     .success(true)
@@ -116,12 +107,12 @@ public class UserController {
         }
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<ApiUserResponseDTO<?>> updateUser(@PathVariable Long id,
+    @PutMapping("/update")
+    public ResponseEntity<ApiUserResponseDTO<?>> updateUser(@RequestHeader("userId") Long userId,
             @ModelAttribute UserUpdateRequestDTO updateRequestDTO,
             @RequestParam(value = "file", required = false) MultipartFile file) {
         try {
-            UserResponseDTO userResponseDTO = iUserInputPort.updateUser(id, updateRequestDTO, file);
+            UserResponseDTO userResponseDTO = iUserInputPort.updateUser(userId, updateRequestDTO, file);
 
             ApiUserResponseDTO<UserResponseDTO> response = ApiUserResponseDTO.<UserResponseDTO>builder()
                     .success(true)

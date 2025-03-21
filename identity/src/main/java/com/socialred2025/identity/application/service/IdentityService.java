@@ -1,9 +1,6 @@
 package com.socialred2025.identity.application.service;
 
-import com.socialred2025.identity.application.dto.LoginRequestDTO;
-import com.socialred2025.identity.application.dto.LoginResponseDTO;
-import com.socialred2025.identity.application.dto.UserRegisterRequestDTO;
-import com.socialred2025.identity.application.dto.UserRegisterResponseDTO;
+import com.socialred2025.identity.application.dto.*;
 import com.socialred2025.identity.infrastructure.inputport.IIdentityInputPort;
 import com.socialred2025.identity.infrastructure.outputport.IUserServicePort;
 import com.socialred2025.identity.infrastructure.utils.JwtUtils;
@@ -12,6 +9,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +37,11 @@ public class IdentityService implements IIdentityInputPort {
 
         Authentication authentication = this.authenticate(username, password);
 
-        String accessToken = jwtUtils.createToken(authentication);
+        UserDTO user = userServicePort.getUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
+
+        Long userId = user.getId();
+
+        String accessToken = jwtUtils.createToken(authentication, userId);
         return LoginResponseDTO.builder()
                 .username(username)
                 .message("Login ok")
