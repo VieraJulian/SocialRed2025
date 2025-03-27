@@ -11,4 +11,6 @@ public interface IInternalUserInputPort {
     InternalUserResponseDTO getUser(String username) throws UserNotFoundException;
 
     UserResponseDTO registerUser(UserRegisterRequestDTO userRegisterRequestDTO) throws RoleNotFoundException;
+
+    boolean existsUserById(Long userId);
 }

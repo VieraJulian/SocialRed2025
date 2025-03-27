@@ -47,6 +47,31 @@ public class InternalUserController {
         }
     }
 
+    @GetMapping("/isValid/{userId}")
+    public ResponseEntity<ApiUserResponseDTO<?>> existsUserById(@PathVariable Long userId) {
+        try {
+            boolean isValid = internalUserInputPort.existsUserById(userId);
+
+            ApiUserResponseDTO<Boolean> response = ApiUserResponseDTO.<Boolean>builder()
+                    .success(true)
+                    .data(isValid)
+                    .error(null)
+                    .build();
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            log.error("Error getting user: {}", e.getMessage());
+
+            ApiUserResponseDTO<String> response = ApiUserResponseDTO.<String>builder()
+                    .success(false)
+                    .data(null)
+                    .error(e.getMessage())
+                    .build();
+
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PostMapping("/register")
     public ResponseEntity<ApiUserResponseDTO<?>> registerUser(@Valid @RequestBody UserRegisterRequestDTO userRegisterRequestDTO) {
         try {

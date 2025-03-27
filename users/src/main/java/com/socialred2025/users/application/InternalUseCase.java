@@ -57,4 +57,9 @@ public class InternalUseCase implements IInternalUserInputPort {
         return userMapper.userEntityToUserResponseDto(userRepository.saveUser(userRegisterInfo));
 
     }
+
+    @Override
+    public boolean existsUserById(Long userId) {
+        return  userRepository.existsById(userId);
+    }
 }
