@@ -15,6 +15,11 @@ spring:
           predicates:
             - Path=/internal/users/**
 
+        - id: publications-service
+          uri: lb://PUBLICATIONS-SERVICE
+          predicates:
+            - Path=/publications/**
+
         - id: identity-service
           uri: lb://IDENTITY-SERVICE
           predicates:

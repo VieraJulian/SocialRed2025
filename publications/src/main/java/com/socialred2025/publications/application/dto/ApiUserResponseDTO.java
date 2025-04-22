@@ -7,7 +7,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ApiPublicationResponseDTO<T> {
+public class ApiUserResponseDTO<T> {
 
     private boolean success;
     private T data;

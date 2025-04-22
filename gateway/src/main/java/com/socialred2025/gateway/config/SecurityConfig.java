@@ -25,6 +25,7 @@ public class SecurityConfig {
                 .authorizeExchange(authorize -> authorize
                         .pathMatchers("/auth/**").permitAll()
                         .pathMatchers("/users/**").permitAll()
+                        .pathMatchers("/publications/**").permitAll()
                         .pathMatchers("/internal/users/**").permitAll()
                         .anyExchange().authenticated())
                 .addFilterAt(jwtTokenValidatorFilter, SecurityWebFiltersOrder.AUTHENTICATION)
