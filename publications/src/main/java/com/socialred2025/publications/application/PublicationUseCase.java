@@ -4,6 +4,8 @@ import com.socialred2025.publications.application.dto.PublicationRequestDTO;
 import com.socialred2025.publications.application.dto.PublicationResponseDTO;
 import com.socialred2025.publications.application.dto.PublicationUpdateRequestDTO;
 import com.socialred2025.publications.application.exception.ImageNotFoundException;
+import com.socialred2025.publications.application.exception.PublicationNotFoundException;
+import com.socialred2025.publications.application.exception.UnauthorizedActionException;
 import com.socialred2025.publications.application.exception.UserNotFoundException;
 import com.socialred2025.publications.application.mapper.IPublicationMapper;
 import com.socialred2025.publications.domain.Image;
@@ -54,8 +56,22 @@ public class PublicationUseCase implements IPublicationInputPort {
     }
 
     @Override
-    public PublicationResponseDTO updatePublication(Long id, PublicationUpdateRequestDTO publicationUpdateRequestDTO, MultipartFile file) {
-        return null;
+    public PublicationResponseDTO updatePublication(Long userId, Long id, PublicationUpdateRequestDTO publicationUpdateRequestDTO, MultipartFile file) throws PublicationNotFoundException, UnauthorizedActionException, IOException {
+        Publication publication = iPublicationRepository.findPublicationById(id).orElseThrow(() -> new PublicationNotFoundException("Publication not found with id: " + id));
+
+        if (!publication.getUserId().equals(userId)) {
+            throw new UnauthorizedActionException("User is not authorized to edit this publication.");
+        }
+
+        if (file != null && !file.isEmpty()) {
+            String newImageUrl = imageUtils.fileUpload(file).getImageUrl();
+            publication.getImage().setImageUrl(newImageUrl);
+        }
+
+        publication.setDescription(publicationUpdateRequestDTO.getDescription());
+        publication.setEdited(true);
+
+        return iPublicationMapper.publicationToPublicationResponseDto(iPublicationRepository.savePublication(publication));
     }
 
     @Override

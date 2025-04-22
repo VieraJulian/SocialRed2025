@@ -3,6 +3,7 @@ package com.socialred2025.publications.infrastructure.inputadapter;
 import com.socialred2025.publications.application.dto.ApiPublicationResponseDTO;
 import com.socialred2025.publications.application.dto.PublicationRequestDTO;
 import com.socialred2025.publications.application.dto.PublicationResponseDTO;
+import com.socialred2025.publications.application.dto.PublicationUpdateRequestDTO;
 import com.socialred2025.publications.infrastructure.inputport.IPublicationInputPort;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +37,31 @@ public class PublicationController {
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (Exception e) {
             log.error("Error creating publication: {}", e.getMessage());
+
+            ApiPublicationResponseDTO<String> response = ApiPublicationResponseDTO.<String>builder()
+                    .success(false)
+                    .data(null)
+                    .error(e.getMessage())
+                    .build();
+
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<ApiPublicationResponseDTO<?>> updatePublication(@RequestHeader("userId") Long userId, @PathVariable Long id, @Valid @ModelAttribute PublicationUpdateRequestDTO publicationUpdateRequestDTO, @RequestParam("file") MultipartFile file) {
+        try {
+            PublicationResponseDTO publicationResponse = iPublicationInputPort.updatePublication(userId, id, publicationUpdateRequestDTO, file);
+
+            ApiPublicationResponseDTO<PublicationResponseDTO> response = ApiPublicationResponseDTO.<PublicationResponseDTO>builder()
+                    .success(true)
+                    .data(publicationResponse)
+                    .error(null)
+                    .build();
+
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
+        } catch (Exception e) {
+            log.error("Error editing publication: {}", e.getMessage());
 
             ApiPublicationResponseDTO<String> response = ApiPublicationResponseDTO.<String>builder()
                     .success(false)
