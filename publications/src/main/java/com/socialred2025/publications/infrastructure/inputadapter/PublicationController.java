@@ -98,4 +98,28 @@ public class PublicationController {
         }
     }
 
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<ApiPublicationResponseDTO<?>> deletePublication(@PathVariable Long id) {
+        try {
+            String msg = iPublicationInputPort.deletePublication(id);
+
+            ApiPublicationResponseDTO<String> response = ApiPublicationResponseDTO.<String>builder()
+                    .success(true)
+                    .data(msg)
+                    .error(null)
+                    .build();
+
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
+        } catch (Exception e) {
+            log.error("Error deleting publication: {}", e.getMessage());
+
+            ApiPublicationResponseDTO<String> response = ApiPublicationResponseDTO.<String>builder()
+                    .success(false)
+                    .data(null)
+                    .error(e.getMessage())
+                    .build();
+
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

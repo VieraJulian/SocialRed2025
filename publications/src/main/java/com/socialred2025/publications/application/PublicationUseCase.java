@@ -87,7 +87,14 @@ public class PublicationUseCase implements IPublicationInputPort {
     }
 
     @Override
-    public String deletePublication(Long id) {
-        return "";
+    public String deletePublication(Long id) throws PublicationNotFoundException {
+
+        if (!iPublicationRepository.existsPublicationById(id)) {
+            throw new PublicationNotFoundException("Publication not found with id: " + id);
+        }
+
+        iPublicationRepository.deletePublicationById(id);
+
+        return "Post with id: " + id + " successfully deleted.";
     }
 }

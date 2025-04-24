@@ -18,5 +18,5 @@ public interface IPublicationInputPort {
     PublicationResponseDTO updatePublication(Long uiserId, Long id, PublicationUpdateRequestDTO publicationUpdateRequestDTO, MultipartFile file) throws PublicationNotFoundException, UnauthorizedActionException, IOException;
     PublicationResponseDTO findPublication(Long id) throws PublicationNotFoundException;
     List<PublicationResponseDTO> feed(Long userId, int page, int size);
-    String deletePublication(Long id);
+    String deletePublication(Long id) throws PublicationNotFoundException;
 }
