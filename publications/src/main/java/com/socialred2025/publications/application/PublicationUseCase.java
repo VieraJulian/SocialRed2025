@@ -75,8 +75,10 @@ public class PublicationUseCase implements IPublicationInputPort {
     }
 
     @Override
-    public PublicationResponseDTO findPublication(Long id) {
-        return null;
+    public PublicationResponseDTO findPublication(Long id) throws PublicationNotFoundException {
+        Publication publication = iPublicationRepository.findPublicationById(id).orElseThrow(() -> new PublicationNotFoundException("Publication not found with id: " + id));
+
+        return iPublicationMapper.publicationToPublicationResponseDto(publication);
     }
 
     @Override

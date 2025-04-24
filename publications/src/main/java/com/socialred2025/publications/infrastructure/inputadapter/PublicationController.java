@@ -73,4 +73,29 @@ public class PublicationController {
         }
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiPublicationResponseDTO<?>> findPublication(@PathVariable Long id) {
+        try {
+            PublicationResponseDTO publicationResponse = iPublicationInputPort.findPublication(id);
+
+            ApiPublicationResponseDTO<PublicationResponseDTO> response = ApiPublicationResponseDTO.<PublicationResponseDTO>builder()
+                    .success(true)
+                    .data(publicationResponse)
+                    .error(null)
+                    .build();
+
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
+        } catch (Exception e) {
+            log.error("Error getting publication: {}", e.getMessage());
+
+            ApiPublicationResponseDTO<String> response = ApiPublicationResponseDTO.<String>builder()
+                    .success(false)
+                    .data(null)
+                    .error(e.getMessage())
+                    .build();
+
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }
