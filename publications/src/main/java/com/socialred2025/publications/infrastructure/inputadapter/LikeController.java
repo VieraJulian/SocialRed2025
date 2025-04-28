@@ -45,4 +45,29 @@ public class LikeController {
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PostMapping("/remove")
+    public ResponseEntity<ApiPublicationResponseDTO<?>> removeLike(@RequestHeader("userId") Long userId, @RequestBody LikeRequestDTO likeRequestDTO) {
+        try {
+            String msj = likeInputPort.removeLike(userId, likeRequestDTO);
+
+            ApiPublicationResponseDTO<String> response = ApiPublicationResponseDTO.<String>builder()
+                    .success(true)
+                    .data(msj)
+                    .error(null)
+                    .build();
+
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
+        } catch (Exception e) {
+            log.error("Error deleting like: {}", e.getMessage());
+
+            ApiPublicationResponseDTO<String> response = ApiPublicationResponseDTO.<String>builder()
+                    .success(false)
+                    .data(null)
+                    .error(e.getMessage())
+                    .build();
+
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

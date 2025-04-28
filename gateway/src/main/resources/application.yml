@@ -20,6 +20,11 @@ spring:
           predicates:
             - Path=/publications/**
 
+        - id: publications-likes-service
+          uri: lb://PUBLICATIONS-SERVICE
+          predicates:
+            - Path=/likes/**
+
         - id: identity-service
           uri: lb://IDENTITY-SERVICE
           predicates:

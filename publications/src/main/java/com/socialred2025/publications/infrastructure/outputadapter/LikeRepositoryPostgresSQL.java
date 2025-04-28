@@ -4,6 +4,8 @@ import com.socialred2025.publications.domain.Like;
 import com.socialred2025.publications.infrastructure.outputport.ILikeRepository;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class LikeRepositoryPostgresSQL implements ILikeRepository {
 
@@ -19,12 +21,17 @@ public class LikeRepositoryPostgresSQL implements ILikeRepository {
     }
 
     @Override
-    public boolean findLikeByUserIdAndPublicationId(Long userId, Long publicationId){
-        return iLikeCrudRepositoryPostgresSQL.existsByUserIdAndPublicationId(userId, publicationId);
+    public Optional<Like> findByUserIdAndPublicationId(Long userId, Long publicationId){
+        return iLikeCrudRepositoryPostgresSQL.findByUserIdAndPublicationId(userId, publicationId);
     }
 
     @Override
     public void deleteLike(Long id) {
         iLikeCrudRepositoryPostgresSQL.deleteById(id);
+    }
+
+    @Override
+    public boolean existsLikeById(Long id) {
+        return false;
     }
 }

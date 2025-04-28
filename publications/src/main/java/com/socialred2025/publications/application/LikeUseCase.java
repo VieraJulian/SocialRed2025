@@ -3,6 +3,8 @@ package com.socialred2025.publications.application;
 import com.socialred2025.publications.application.dto.LikeDTO;
 import com.socialred2025.publications.application.dto.LikeRequestDTO;
 import com.socialred2025.publications.application.exception.LikeAlreadyExistsException;
+import com.socialred2025.publications.application.exception.LikeNotFoundException;
+import com.socialred2025.publications.application.exception.UnableToDeleteLikeException;
 import com.socialred2025.publications.application.mapper.ILikeMapper;
 import com.socialred2025.publications.domain.Like;
 import com.socialred2025.publications.infrastructure.inputport.ILikeInputPort;
@@ -24,7 +26,7 @@ public class LikeUseCase implements ILikeInputPort {
     @Override
     public LikeDTO addLike(Long userId, LikeRequestDTO likeRequestDTO) throws LikeAlreadyExistsException {
 
-        if (likeRepository.findLikeByUserIdAndPublicationId(userId, likeRequestDTO.getPublicationId())) {
+        if (likeRepository.findByUserIdAndPublicationId(userId, likeRequestDTO.getPublicationId()).isPresent()) {
             throw new LikeAlreadyExistsException("The user has already liked this post.");
         }
 
@@ -37,7 +39,18 @@ public class LikeUseCase implements ILikeInputPort {
     }
 
     @Override
-    public String removeLike(Long userId, LikeRequestDTO likeRequestDTO) {
-        return "";
+    public String removeLike(Long userId, LikeRequestDTO likeRequestDTO) throws LikeNotFoundException, UnableToDeleteLikeException {
+
+        Like like = likeRepository.findByUserIdAndPublicationId(userId, likeRequestDTO.getPublicationId())
+                .orElseThrow(() -> new LikeNotFoundException("Like not found for this user and publication."));
+
+        likeRepository.deleteLike(like.getId());
+
+        if (likeRepository.existsLikeById(like.getId())) {
+            throw new UnableToDeleteLikeException("The like could not be deleted successfully.");
+        }
+
+        return "Like successfully removed.";
     }
+
 }
