@@ -15,7 +15,7 @@ import java.util.List;
 public interface IPublicationInputPort {
 
     PublicationResponseDTO createPublication(Long userId, PublicationRequestDTO publicationRequestDTO, MultipartFile file) throws UserNotFoundException, ImageNotFoundException, IOException;
-    PublicationResponseDTO updatePublication(Long uiserId, Long id, PublicationUpdateRequestDTO publicationUpdateRequestDTO, MultipartFile file) throws PublicationNotFoundException, UnauthorizedActionException, IOException;
+    PublicationResponseDTO updatePublication(Long userId, Long id, PublicationUpdateRequestDTO publicationUpdateRequestDTO, MultipartFile file) throws PublicationNotFoundException, UnauthorizedActionException, IOException;
     PublicationResponseDTO findPublication(Long id) throws PublicationNotFoundException;
     List<PublicationResponseDTO> feed(Long userId, int page, int size);
     String deletePublication(Long id) throws PublicationNotFoundException;

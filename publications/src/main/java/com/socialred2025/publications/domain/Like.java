@@ -2,15 +2,13 @@ package com.socialred2025.publications.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity(name = "likes")
 public class Like {
 
@@ -21,4 +19,8 @@ public class Like {
     @NotNull(message = "User ID cannot be null")
     @Column(nullable = false)
     private Long userId;
+
+    @NotNull(message = "Publication ID cannot be null")
+    @Column(nullable = false)
+    private Long publicationId;
 }
