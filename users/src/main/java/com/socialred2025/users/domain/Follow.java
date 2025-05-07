@@ -1,10 +1,7 @@
 package com.socialred2025.users.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 /**
  * The Follow class represents a relationship between two UserEntity instances where one user follows
@@ -15,6 +12,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Table(name = "follows")
 public class Follow {
 

@@ -10,6 +10,11 @@ spring:
           predicates:
             - Path=/users/**
 
+        - id: users-follow-service
+          uri: lb://USERS-SERVICE
+          predicates:
+            - Path=/follows/**
+
         - id: internal-service
           uri: lb://USERS-SERVICE
           predicates:
