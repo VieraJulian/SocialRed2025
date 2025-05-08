@@ -3,6 +3,7 @@ package com.socialred2025.users.application;
 import com.socialred2025.users.application.dto.FollowDTO;
 import com.socialred2025.users.application.dto.FollowRequestDTO;
 import com.socialred2025.users.application.exception.AlreadyFollowingException;
+import com.socialred2025.users.application.exception.NotFollowingException;
 import com.socialred2025.users.application.exception.SelfFollowException;
 import com.socialred2025.users.application.exception.UserNotFoundException;
 import com.socialred2025.users.application.mapper.IFollowMapper;
@@ -34,6 +35,7 @@ public class FollowUseCase implements IFollowInputPort {
     public FollowDTO createFollow(Long userId, FollowRequestDTO followRequestDTO) throws UserNotFoundException, AlreadyFollowingException, SelfFollowException {
         Long followedId = followRequestDTO.getFollowedId();
 
+
         boolean existsFollow = followRepository.findByFollowerIdAndFollowedId(userId, followedId).isPresent();
 
         if (existsFollow) {
@@ -59,8 +61,15 @@ public class FollowUseCase implements IFollowInputPort {
     }
 
     @Override
-    public String deleteFollow(Long userId, FollowRequestDTO followRequestDTO) {
-        return "";
+    public String deleteFollow(Long userId, FollowRequestDTO followRequestDTO) throws NotFollowingException {
+        Long followedId = followRequestDTO.getFollowedId();
+
+        Follow follow = followRepository.findByFollowerIdAndFollowedId(userId, followedId)
+                .orElseThrow(() -> new NotFollowingException("The user is not following this profile."));
+
+        followRepository.deleteFollowById(follow.getId());
+
+        return "The user is no longer following this profile.";
     }
 
     @Override
