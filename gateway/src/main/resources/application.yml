@@ -15,6 +15,11 @@ spring:
           predicates:
             - Path=/follows/**
 
+        - id: users-friend-service
+          uri: lb://USERS-SERVICE
+          predicates:
+            - Path=/friends/**
+
         - id: internal-service
           uri: lb://USERS-SERVICE
           predicates:
