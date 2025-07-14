@@ -1,0 +1,47 @@
+package com.socialred2025.users.infrastructure.inputadapter;
+
+import com.socialred2025.users.application.dto.ApiUserResponseDTO;
+import com.socialred2025.users.application.dto.FriendDTO;
+import com.socialred2025.users.application.dto.FriendRequestDTO;
+import com.socialred2025.users.infrastructure.inputport.IFriendInputPort;
+import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/friends")
+@Slf4j
+public class FriendController {
+    private final IFriendInputPort friendInputPort;
+
+    public FriendController(IFriendInputPort friendInputPort){
+        this.friendInputPort = friendInputPort;
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<ApiUserResponseDTO<?>> createFriend(@RequestHeader("userId") Long userId, @Valid @RequestBody FriendRequestDTO friendRequestDTO) {
+        try {
+            FriendDTO friendDTO = friendInputPort.createFriend(userId, friendRequestDTO);
+
+            ApiUserResponseDTO<FriendDTO> response = ApiUserResponseDTO.<FriendDTO>builder()
+                    .success(true)
+                    .data(friendDTO)
+                    .error(null)
+                    .build();
+
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
+        } catch (Exception e) {
+            log.error("Error creating friend: {}", e.getMessage());
+
+            ApiUserResponseDTO<String> response = ApiUserResponseDTO.<String>builder()
+                    .success(false)
+                    .data(null)
+                    .error(e.getMessage())
+                    .build();
+
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+}
