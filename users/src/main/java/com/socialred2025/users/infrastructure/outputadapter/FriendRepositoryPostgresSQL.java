@@ -1,6 +1,7 @@
 package com.socialred2025.users.infrastructure.outputadapter;
 
 import com.socialred2025.users.domain.Friend;
+import com.socialred2025.users.domain.StatusType;
 import com.socialred2025.users.infrastructure.outputport.IFriendRepository;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +25,11 @@ public class FriendRepositoryPostgresSQL implements IFriendRepository {
     @Override
     public List<Friend> findByUserId(Long userId) {
         return friendCrudRepositoryPostgresSQL.findByUserId(userId);
+    }
+
+    @Override
+    public List<Friend> findByUserIdAndStatus(Long userId, StatusType status) {
+        return friendCrudRepositoryPostgresSQL.findByUserIdAndStatus(userId, status);
     }
 
     @Override

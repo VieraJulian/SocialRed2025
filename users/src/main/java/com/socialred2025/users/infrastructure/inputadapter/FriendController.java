@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/friends")
 @Slf4j
@@ -34,6 +36,32 @@ public class FriendController {
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (Exception e) {
             log.error("Error creating friend: {}", e.getMessage());
+
+            ApiUserResponseDTO<String> response = ApiUserResponseDTO.<String>builder()
+                    .success(false)
+                    .data(null)
+                    .error(e.getMessage())
+                    .build();
+
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity<ApiUserResponseDTO<?>> statusFriend(@RequestHeader("userId") Long userId, @RequestParam String status) {
+        try {
+            List<FriendDTO> friendDTOList = friendInputPort.findFriendsByUserIdAndStatus(userId, status);
+
+            ApiUserResponseDTO<List<FriendDTO>> response = ApiUserResponseDTO.<List<FriendDTO>>builder()
+                    .success(true)
+                    .data(friendDTOList)
+                    .error(null)
+                    .build();
+
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
+
+        } catch (Exception e) {
+            log.error("Error getting friend: {}", e.getMessage());
 
             ApiUserResponseDTO<String> response = ApiUserResponseDTO.<String>builder()
                     .success(false)

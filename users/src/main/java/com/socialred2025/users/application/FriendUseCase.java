@@ -15,6 +15,7 @@ import com.socialred2025.users.infrastructure.outputport.IUserRepository;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -60,12 +61,30 @@ public class FriendUseCase implements IFriendInputPort {
     }
 
     @Override
-    public String deleteFriend(Long userId, FriendRequestDTO friendRequestDTO) {
-        return "";
+    public List<FriendDTO> findFriendsByUserIdAndStatus(Long userId, String status) {
+        List<Friend> friendList = friendRepository.findByUserIdAndStatus(userId, StatusType.valueOf(status));
+
+        List<FriendDTO> friendListDTO = new ArrayList<>();
+
+        for (Friend f : friendList) {
+            friendListDTO.add(FriendDTO.builder()
+                            .id(f.getId())
+                            .userId(f.getUser().getId())
+                            .userFriendId(f.getUserFriend().getId())
+                            .status(f.getStatus().name())
+                            .build());
+        }
+
+        return friendListDTO;
     }
 
     @Override
     public List<FriendDTO> findFriendsByUserId(Long userId) {
         return List.of();
+    }
+
+    @Override
+    public String deleteFriend(Long userId, FriendRequestDTO friendRequestDTO) {
+        return "";
     }
 }
