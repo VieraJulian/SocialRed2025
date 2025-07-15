@@ -2,7 +2,9 @@ package com.socialred2025.users.application;
 
 import com.socialred2025.users.application.dto.FriendDTO;
 import com.socialred2025.users.application.dto.FriendRequestDTO;
+import com.socialred2025.users.application.dto.FriendStatusRequestDTO;
 import com.socialred2025.users.application.exception.AlreadyFriendsException;
+import com.socialred2025.users.application.exception.FriendshipNotFoundException;
 import com.socialred2025.users.application.exception.SelfFriendException;
 import com.socialred2025.users.application.exception.UserNotFoundException;
 import com.socialred2025.users.application.mapper.IFriendMapper;
@@ -58,6 +60,22 @@ public class FriendUseCase implements IFriendInputPort {
 
         return friendMapper.friendToFriendDto(friendRepository.saveFriend(friendInfo));
 
+    }
+
+    @Override
+    public FriendDTO updateFriendStatus(Long userId, FriendStatusRequestDTO friendStatusRequestDTO) throws FriendshipNotFoundException {
+        Long userFriendId = friendStatusRequestDTO.getUserFriendId();
+        StatusType status = StatusType.valueOf(friendStatusRequestDTO.getStatus());
+
+        Friend friendship = friendRepository.findByUserIdAndUserFriendId(userId, userFriendId)
+                .orElseThrow(() -> new FriendshipNotFoundException("No friendship found between user " + userId + " and user " + userFriendId));
+
+        if (friendship.getStatus() == status) {
+            return friendMapper.friendToFriendDto(friendship);
+        }
+
+        friendship.setStatus(status);
+        return friendMapper.friendToFriendDto(friendRepository.saveFriend(friendship));
     }
 
     @Override
