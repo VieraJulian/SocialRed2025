@@ -98,7 +98,19 @@ public class FriendUseCase implements IFriendInputPort {
 
     @Override
     public List<FriendDTO> findFriendsByUserId(Long userId) {
-        return List.of();
+        List<Friend> friendList = friendRepository.findByUserId(userId);
+        List<FriendDTO> friendDTOList = new ArrayList<>();
+
+        for (Friend f : friendList) {
+            friendDTOList.add(FriendDTO.builder()
+                            .id(f.getId())
+                            .userId(f.getUser().getId())
+                            .userFriendId(f.getUserFriend().getId())
+                            .status(f.getStatus().name())
+                            .build());
+        }
+
+        return friendDTOList;
     }
 
     @Override

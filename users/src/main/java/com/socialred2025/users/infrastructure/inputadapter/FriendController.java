@@ -74,6 +74,32 @@ public class FriendController {
         }
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<ApiUserResponseDTO<?>> getAllFriends(@RequestHeader("userId") Long userId) {
+        try {
+            List<FriendDTO> friendDTOList = friendInputPort.findFriendsByUserId(userId);
+
+            ApiUserResponseDTO<List<FriendDTO>> response = ApiUserResponseDTO.<List<FriendDTO>>builder()
+                    .success(true)
+                    .data(friendDTOList)
+                    .error(null)
+                    .build();
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+
+        } catch (Exception e) {
+            log.error("Error getting friends: {}", e.getMessage());
+
+            ApiUserResponseDTO<String> response = ApiUserResponseDTO.<String>builder()
+                    .success(false)
+                    .data(null)
+                    .error(e.getMessage())
+                    .build();
+
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PutMapping("/status")
     public ResponseEntity<ApiUserResponseDTO<?>> updateFriendStatus(@RequestHeader("userId") Long userId, @RequestBody FriendStatusRequestDTO friendStatusRequestDTO) {
         try {
