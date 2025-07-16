@@ -2,9 +2,9 @@ package com.socialred2025.publications.infrastructure.outputadapter;
 
 import com.socialred2025.publications.domain.Publication;
 import com.socialred2025.publications.infrastructure.outputport.IPublicationRepository;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,8 +28,8 @@ public class PublicationRepositoryPostgresSQL implements IPublicationRepository 
     }
 
     @Override
-    public List<Publication> findAllPublications(Pageable pageable) {
-        return iPublicationCRUDRepositoryPostgresSQL.findAllPublications(pageable);
+    public List<Publication> findAllPublications(List<Long> userIds, Pageable pageable) {
+        return iPublicationCRUDRepositoryPostgresSQL.findAllByUserIdInOrderByCreatedAtDesc(userIds, pageable);
     }
 
     @Override

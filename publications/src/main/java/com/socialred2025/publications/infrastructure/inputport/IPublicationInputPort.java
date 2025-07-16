@@ -1,5 +1,6 @@
 package com.socialred2025.publications.infrastructure.inputport;
 
+import com.socialred2025.publications.application.dto.FriendStatusRequestDTO;
 import com.socialred2025.publications.application.dto.PublicationRequestDTO;
 import com.socialred2025.publications.application.dto.PublicationResponseDTO;
 import com.socialred2025.publications.application.dto.PublicationUpdateRequestDTO;
@@ -17,6 +18,6 @@ public interface IPublicationInputPort {
     PublicationResponseDTO createPublication(Long userId, PublicationRequestDTO publicationRequestDTO, MultipartFile file) throws UserNotFoundException, ImageNotFoundException, IOException;
     PublicationResponseDTO updatePublication(Long userId, Long id, PublicationUpdateRequestDTO publicationUpdateRequestDTO, MultipartFile file) throws PublicationNotFoundException, UnauthorizedActionException, IOException;
     PublicationResponseDTO findPublication(Long id) throws PublicationNotFoundException;
-    List<PublicationResponseDTO> feed(Long userId, int page, int size);
+    List<PublicationResponseDTO> feed(Long userId, String status, int page, int size);
     String deletePublication(Long id) throws PublicationNotFoundException;
 }

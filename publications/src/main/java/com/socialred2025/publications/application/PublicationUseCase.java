@@ -1,8 +1,6 @@
 package com.socialred2025.publications.application;
 
-import com.socialred2025.publications.application.dto.PublicationRequestDTO;
-import com.socialred2025.publications.application.dto.PublicationResponseDTO;
-import com.socialred2025.publications.application.dto.PublicationUpdateRequestDTO;
+import com.socialred2025.publications.application.dto.*;
 import com.socialred2025.publications.application.exception.ImageNotFoundException;
 import com.socialred2025.publications.application.exception.PublicationNotFoundException;
 import com.socialred2025.publications.application.exception.UnauthorizedActionException;
@@ -13,12 +11,17 @@ import com.socialred2025.publications.domain.Publication;
 import com.socialred2025.publications.infrastructure.inputport.IPublicationInputPort;
 import com.socialred2025.publications.infrastructure.outputport.IImageRepository;
 import com.socialred2025.publications.infrastructure.outputport.IPublicationRepository;
+import com.socialred2025.publications.infrastructure.outputport.IUserServicePort;
 import com.socialred2025.publications.infrastructure.utils.ImageUtils;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PublicationUseCase implements IPublicationInputPort {
@@ -31,11 +34,14 @@ public class PublicationUseCase implements IPublicationInputPort {
 
     private final ImageUtils imageUtils;
 
-    public PublicationUseCase(IPublicationMapper iPublicationMapper, ImageUtils imageUtils, IPublicationRepository iPublicationRepository, IImageRepository iImageRepository) {
+    private final IUserServicePort iUserServicePort;
+
+    public PublicationUseCase(IPublicationMapper iPublicationMapper, ImageUtils imageUtils, IPublicationRepository iPublicationRepository, IImageRepository iImageRepository, IUserServicePort iUserServicePort) {
         this.imageUtils = imageUtils;
         this.iPublicationRepository = iPublicationRepository;
         this.iPublicationMapper = iPublicationMapper;
         this.iImageRepository = iImageRepository;
+        this.iUserServicePort = iUserServicePort;
     }
 
     @Override
@@ -82,8 +88,33 @@ public class PublicationUseCase implements IPublicationInputPort {
     }
 
     @Override
-    public List<PublicationResponseDTO> feed(Long userId, int page, int size) {
-        return List.of();
+    public List<PublicationResponseDTO> feed(Long userId, String status, int page, int size) {
+        List<PublicationResponseDTO> publicationResponseDTO = new ArrayList<>();
+        Pageable pageable = PageRequest.of(page, size);
+
+        List<FriendDTO> friendDTOList = iUserServicePort.getAllFriends(userId, status);
+        List<Long> friendIdList = friendDTOList.stream()
+                .map(FriendDTO::getUserFriendId)
+                .collect(Collectors.toList());
+
+        List<Publication> publications = iPublicationRepository.findAllPublications(friendIdList, pageable);
+
+        for (Publication p : publications){
+            publicationResponseDTO.add(PublicationResponseDTO.builder()
+                            .id(p.getId())
+                            .userId(p.getUserId())
+                            .description(p.getDescription())
+                            .likesCount(p.getLikesCount())
+                            .edited(p.isEdited())
+                            .createdAt(p.getCreatedAt())
+                            .updatedAt(p.getUpdatedAt())
+                            .image(p.getImage())
+                            .likes(p.getLikes())
+                            .comments(p.getComments())
+                    .build());
+        }
+
+        return publicationResponseDTO;
     }
 
     @Override
