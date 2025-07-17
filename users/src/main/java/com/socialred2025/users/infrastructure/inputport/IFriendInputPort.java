@@ -16,6 +16,6 @@ public interface IFriendInputPort {
     FriendDTO updateFriendStatus(Long userId, FriendStatusRequestDTO friendStatusRequestDTO) throws FriendshipNotFoundException;
     List<FriendDTO> findFriendsByUserId(Long userId);
     List<FriendDTO> findFriendsByUserIdAndStatus(Long userId, String status);
-    String deleteFriend(Long userId, FriendRequestDTO friendRequestDTO);
+    String deleteFriend(Long userId, FriendRequestDTO friendRequestDTO) throws FriendshipNotFoundException;
 
 }

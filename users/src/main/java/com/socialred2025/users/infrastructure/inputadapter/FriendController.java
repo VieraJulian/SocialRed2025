@@ -124,4 +124,29 @@ public class FriendController {
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<ApiUserResponseDTO<?>> deleteFriend(@RequestHeader("userId") Long userId, @RequestBody FriendRequestDTO friendRequestDTO){
+        try {
+            String msg = friendInputPort.deleteFriend(userId, friendRequestDTO);
+
+            ApiUserResponseDTO<String> response = ApiUserResponseDTO.<String>builder()
+                    .success(true)
+                    .data(msg)
+                    .error(null)
+                    .build();
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            log.error("Error deleting friendship: {}", e.getMessage());
+
+            ApiUserResponseDTO<String> response = ApiUserResponseDTO.<String>builder()
+                    .success(false)
+                    .data(null)
+                    .error(e.getMessage())
+                    .build();
+
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

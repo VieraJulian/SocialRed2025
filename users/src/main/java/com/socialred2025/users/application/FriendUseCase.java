@@ -114,7 +114,12 @@ public class FriendUseCase implements IFriendInputPort {
     }
 
     @Override
-    public String deleteFriend(Long userId, FriendRequestDTO friendRequestDTO) {
-        return "";
+    public String deleteFriend(Long userId, FriendRequestDTO friendRequestDTO) throws FriendshipNotFoundException {
+        Long friendId = friendRequestDTO.getUserFriendId();
+
+        Friend friendship = friendRepository.findByUserIdAndUserFriendId(userId, friendId).orElseThrow(() -> new FriendshipNotFoundException("No friendship found between user " + userId + " and user " + friendId));
+
+        friendRepository.deleteFriendById(friendship.getId());
+        return "Friendship deleted successfully";
     }
 }

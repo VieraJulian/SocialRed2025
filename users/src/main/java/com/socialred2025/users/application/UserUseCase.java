@@ -89,7 +89,7 @@ public class UserUseCase implements IUserInputPort {
         if (userRepository.isEnabled(id)) {
             userRepository.deleteUserById(id);
 
-            return "User deleted successfuly";
+            return "User deleted successfully";
         } else {
             return "User is already disabled";
         }
